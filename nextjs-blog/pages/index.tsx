@@ -1,4 +1,4 @@
-import type { InferGetStaticPropsType, GetStaticProps, GetServerSideProps } from 'next'
+import type { InferGetStaticPropsType, GetStaticProps } from 'next'
  
 type Repo = {
   name: string
@@ -12,17 +12,10 @@ export const getStaticProps = (async (context) => {
 }) satisfies GetStaticProps<{
   repo: Repo
 }>
-   
-export const getServerSideProps = (async (context) => {
-  const res = await fetch('https://api.github.com/repos/vercel/next.js')
-  const repo = await res.json()
-  return { props: { repo } }
-}) satisfies GetServerSideProps<{
-  repo: Repo
-}>
- 
+
 export default function Page({
-  repo,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  return repo.stargazers_count
+    repo,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+    return repo.stargazers_count
 }
+   
